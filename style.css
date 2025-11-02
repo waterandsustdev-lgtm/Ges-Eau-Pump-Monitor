@@ -15,6 +15,18 @@ header {
     padding: 20px 0;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- MODIFICATION ICI --- */
+.logo {
+    /* Changez la valeur ci-dessous pour ajuster la taille du logo */
+    height: 50px; /* Hauteur du logo en pixels */
+    
+    width: auto; /* La largeur s'ajuste automatiquement */
+    margin-bottom: 15px; /* Espace entre le logo et le titre */
 }
 
 header h1 {
@@ -32,10 +44,10 @@ header p {
 main {
     flex-grow: 1;
     display: flex;
-    flex-wrap: wrap; /* Permet aux cartes de s'aligner sur plusieurs lignes */
+    flex-wrap: wrap; 
     justify-content: center;
     align-items: center;
-    gap: 30px; /* Espace entre les cartes */
+    gap: 30px; 
     padding: 40px 20px;
 }
 
@@ -46,14 +58,14 @@ main {
     padding: 30px;
     text-align: center;
     min-width: 280px;
-    flex: 1; /* Permet aux cartes de prendre de l'espace disponible */
-    max-width: 400px; /* Limite la largeur des cartes */
+    flex: 1;
+    max-width: 400px;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    border-bottom: 5px solid #007bff; /* Bande bleue en bas */
+    border-bottom: 5px solid #007bff;
 }
 
 .data-card:hover {
-    transform: translateY(-5px); /* Petit effet de soulèvement au survol */
+    transform: translateY(-px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
@@ -72,7 +84,7 @@ main {
 }
 
 .data-card p span {
-    display: block; /* Pour que le nombre soit sur sa propre ligne si nécessaire */
+    display: block;
 }
 
 .last-update {
@@ -89,5 +101,5 @@ footer {
     text-align: center;
     padding: 15px 0;
     font-size: 0.9em;
-    margin-top: auto; /* Pousse le footer vers le bas */
+    margin-top: auto;
 }
