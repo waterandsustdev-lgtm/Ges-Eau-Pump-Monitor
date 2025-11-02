@@ -23,7 +23,7 @@ header {
 /* --- MODIFICATION ICI --- */
 .logo {
     /* Changez la valeur ci-dessous pour ajuster la taille du logo */
-    height: 350px; /* Hauteur du logo en pixels */
+    height: 400px; /* Hauteur du logo en pixels */
     
     width: auto; /* La largeur s'ajuste automatiquement */
     margin-bottom: 15px; /* Espace entre le logo et le titre */
@@ -103,5 +103,6 @@ footer {
     font-size: 0.9em;
     margin-top: auto;
 }
+
 
 
