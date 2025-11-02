@@ -1,0 +1,93 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e0f2f7; /* Bleu très clair */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #007bff; /* Bleu primaire */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    letter-spacing: 1px;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap; /* Permet aux cartes de s'aligner sur plusieurs lignes */
+    justify-content: center;
+    align-items: center;
+    gap: 30px; /* Espace entre les cartes */
+    padding: 40px 20px;
+}
+
+.data-card {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    min-width: 280px;
+    flex: 1; /* Permet aux cartes de prendre de l'espace disponible */
+    max-width: 400px; /* Limite la largeur des cartes */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-bottom: 5px solid #007bff; /* Bande bleue en bas */
+}
+
+.data-card:hover {
+    transform: translateY(-5px); /* Petit effet de soulèvement au survol */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.data-card h2 {
+    color: #0056b3; /* Bleu plus foncé */
+    font-size: 1.8em;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.data-card p {
+    font-size: 2.8em;
+    font-weight: bold;
+    color: #007bff; /* Couleur de l'eau */
+    margin: 0;
+}
+
+.data-card p span {
+    display: block; /* Pour que le nombre soit sur sa propre ligne si nécessaire */
+}
+
+.last-update {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+footer {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.9em;
+    margin-top: auto; /* Pousse le footer vers le bas */
+}

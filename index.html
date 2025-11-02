@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ges'Eau - Moniteur de Débit d'Eau</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Intégration du SDK Firebase - OBLIGATOIRE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+        // Votre configuration Firebase (celle que vous avez trouvée plus tôt)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAsMR4HpOHlnQvDO9zzV1xwaKdXQwrzvcI",
+            authDomain: "ges-eau-pump-data.firebaseapp.com",
+            databaseURL: "https://ges-eau-pump-data-default-rtdb.firebaseio.com",
+            projectId: "ges-eau-pump-data",
+            storageBucket: "ges-eau-pump-data.firebasestorage.app",
+            messagingSenderId: "28698633339",
+            appId: "1:28698633339:web:42f9ac650b1c1d60542ede",
+            measurementId: "G-1E2ZLSP5BL"
+        };
+
+        // Initialise Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Référence à l'emplacement des données de votre ESP32 dans la base de données
+        const gesBoxId = "GesBox_01"; 
+        const gesEauRef = ref(database, '/' + gesBoxId);
+
+        // Écoute les changements de données en temps réel
+        onValue(gesEauRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('debit').textContent = parseFloat(data.debit_L_min).toFixed(2);
+                document.getElementById('volume').textContent = parseFloat(data.volume_total_L).toFixed(2);
+                
+                // Formater le timestamp pour une meilleure lisibilité
+                const timestampMs = data.derniere_maj;
+                const date = new Date(timestampMs);
+                const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                document.getElementById('last-update').textContent = date.toLocaleDateString('fr-FR', options);
+
+            } else {
+                document.getElementById('debit').textContent = 'N/A';
+                document.getElementById('volume').textContent = 'N/A';
+                document.getElementById('last-update').textContent = 'Aucune donnée';
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <!-- NOUVEAU : Ajout de l'image du logo ici -->
+        <img src="logo.png" alt="Logo Ges'Eau" class="logo">
+        
+        <h1>Ges'Eau</h1>
+        <p>Moniteur de Consommation d'Eau en Temps Réel</p>
+    </header>
+
+    <main>
+        <div class="data-card">
+            <h2>Débit Actuel</h2>
+            <p><span id="debit">--.--</span> L/min</p>
+        </div>
+        <div class="data-card">
+            <h2>Volume Total</h2>
+            <p><span id="volume">----.--</span> Litres</p>
+        </div>
+        <div class="last-update">
+            Dernière mise à jour : <span id="last-update">Chargement...</span>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Projet Ges'Eau</p>
+    </footer>
+</body>
+</html>
