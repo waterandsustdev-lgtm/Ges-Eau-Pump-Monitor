@@ -104,5 +104,58 @@ footer {
     margin-top: auto;
 }
 
+/* AJOUTEZ CE BLOC À LA FIN DE VOTRE FICHIER STYLE.CSS */
+
+/* Style pour la section des contrôles et le bouton */
+.controls {
+    width: 100%;
+    text-align: center;
+    /* On utilise 'order' pour placer cet élément avant 'last-update' */
+    order: 3; 
+    margin-top: 10px;
+}
+
+.button-reset {
+    background-color: #28a745; /* Vert */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.button-reset:hover {
+    background-color: #218838; /* Vert plus foncé */
+    transform: translateY(-2px);
+}
+
+.button-reset:active {
+    transform: translateY(0);
+}
+
+.last-update {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    /* On utilise 'order' pour placer cet élément après le bouton */
+    order: 4;
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* On doit modifier 'main' pour que 'order' fonctionne */
+main {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: center;
+    gap: 30px; 
+    padding: 40px 20px;
+}
+
 
 
