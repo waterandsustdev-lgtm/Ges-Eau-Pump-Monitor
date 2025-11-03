@@ -6,40 +6,42 @@
     <title>Ges'Eau - Moniteur de Débit d'Eau</title>
     <link rel="stylesheet" href="style.css">
     
-    <!-- NOUVEAU : Le script lit maintenant depuis votre Google Sheet -->
+    <!-- Le script mis à jour avec la logique de réinitialisation -->
     <script>
         // Le lien vers votre fichier CSV publié sur le web
         const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9mH7i8Rb1gXkViGX16ZW3aM1pmcZP5DuhFVj0OdJoyRf8BchsFIFQfk8ulOufoR00hrBWbjTdX5u/pub?gid=0&single=true&output=csv';
 
+        // NOUVEAU : Variables pour gérer la réinitialisation du volume
+        let volumeOffset = 0; // Le "point zéro" de l'essai en cours
+        let totalVolumeFromServer = 0; // La dernière valeur brute de volume reçue
+
         // Fonction pour récupérer et afficher les données
         function fetchData() {
-            // On ajoute un paramètre aléatoire pour éviter que le navigateur ne mette en cache le fichier
             fetch(GOOGLE_SHEET_CSV_URL + '&cacheBuster=' + new Date().getTime())
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Erreur réseau lors de la récupération des données');
+                        throw new Error('Erreur réseau');
                     }
                     return response.text();
                 })
                 .then(csvText => {
-                    // Le CSV a deux lignes : l'en-tête (ligne 0) et les données (ligne 1)
                     const rows = csvText.trim().split('\n');
                     if (rows.length < 2) {
-                        // S'il n'y a pas encore de ligne de données
                         document.getElementById('last-update').textContent = 'En attente de la première donnée...';
                         return;
                     }
                     
-                    const dataRow = rows[1].split(','); // On prend la deuxième ligne qui contient les valeurs
+                    const dataRow = rows[1].split(',');
 
-                    // Les colonnes sont : 0=Timestamp, 1=Debit, 2=Volume
                     const timestamp = dataRow[0];
                     const debit = parseFloat(dataRow[1]).toFixed(2);
-                    const volume = parseFloat(dataRow[2]).toFixed(2);
+                    totalVolumeFromServer = parseFloat(dataRow[2]); // On met à jour le volume total brut
 
-                    // Mise à jour des valeurs sur la page
+                    // On calcule et affiche le volume de l'essai en cours
+                    const volumeEssai = totalVolumeFromServer - volumeOffset;
+
                     document.getElementById('debit').textContent = debit;
-                    document.getElementById('volume').textContent = volume;
+                    document.getElementById('volume').textContent = volumeEssai.toFixed(2);
                     
                     const date = new Date(timestamp);
                     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
@@ -51,10 +53,22 @@
                 });
         }
 
-        // Au chargement de la page, on lance la mise à jour
+        // NOUVEAU : Fonction pour démarrer un nouvel essai
+        function startNewTest() {
+            // On définit le nouveau point de départ avec la dernière valeur de volume reçue
+            volumeOffset = totalVolumeFromServer;
+            // On rafraîchit immédiatement l'affichage pour montrer le "0.00"
+            fetchData();
+            alert("Nouvel essai démarré ! Le volume a été réinitialisé.");
+        }
+
+        // Au chargement de la page, on lance les mises à jour et on attache l'événement au bouton
         window.onload = () => {
-            fetchData(); // Premier chargement immédiat des données
-            setInterval(fetchData, 15000); // On rafraîchit les données toutes les 15 secondes
+            fetchData(); // Premier chargement
+            setInterval(fetchData, 15000); // Rafraîchissement toutes les 15 secondes
+            
+            // Attache la fonction au clic du bouton
+            document.getElementById('resetButton').addEventListener('click', startNewTest);
         };
     </script>
 </head>
@@ -71,9 +85,16 @@
             <p><span id="debit">--.--</span> L/min</p>
         </div>
         <div class="data-card">
-            <h2>Volume Total</h2>
+            <!-- MODIFIÉ : Le titre indique maintenant que c'est le volume de l'essai -->
+            <h2>Volume de l'Essai</h2>
             <p><span id="volume">----.--</span> Litres</p>
         </div>
+
+        <!-- NOUVEAU : La section avec le bouton -->
+        <div class="controls">
+            <button id="resetButton" class="button-reset">Démarrer un Nouvel Essai</button>
+        </div>
+
         <div class="last-update">
             Dernière mise à jour : <span id="last-update">Chargement...</span>
         </div>
